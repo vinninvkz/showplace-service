@@ -1,0 +1,75 @@
+#version: '3.8'
+#
+#services:
+##  postgres:
+##    image: postgres:17
+##    container_name: postgres
+##    environment:
+##      POSTGRES_DB: showplace_db
+##      POSTGRES_USER: user
+##      POSTGRES_PASSWORD: pass
+##    ports:
+##      - "5432:5432"
+##    volumes:
+##      - postgres_data:/var/lib/postgresql/data
+##
+#  app:
+#    build: .
+#    container_name: showplace_app
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-container:5432/postgres
+#      SPRING_DATASOURCE_USERNAME: user
+#      SPRING_DATASOURCE_PASSWORD: pass
+#
+#
+
+#version: '3.8'
+#
+#services:
+#  showplace-db:
+#    image: postgres:17
+#    hostname: showplace-db
+#    environment:
+#      POSTGRES_DB: postgres
+#      POSTGRES_USER: user
+#      POSTGRES_PASSWORD: pass
+#    ports:
+#      - "5432:5432"
+#
+#
+#  app:
+#    build:
+#      context: "../"
+#      dockerfile: Dockerfile
+#    ports:
+#        - "8080:8080"
+#    depends_on:
+#        - showplace-db
+
+
+services:
+  landmarks:
+    build:
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://landmarks-db:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    ports:
+      - "8080:8080"
+    depends_on:
+      - landmarks-db
+
+  landmarks-db:
+    image: postgres:15-alpine
+    hostname: landmarks-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+
+
